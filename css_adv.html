@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive States & Pseudo-classes Guide</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 30px;
+            border: 2px solid #f0f0f0;
+            border-radius: 15px;
+            background: #fafafa;
+        }
+
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .section h3 {
+            color: #555;
+            margin: 25px 0 15px 0;
+            font-size: 1.3em;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+
+        .demo-area {
+            margin: 20px 0;
+            padding: 20px;
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            background: white;
+        }
+
+        /* LINK STATES DEMO */
+        .link-demo a {
+            display: inline-block;
+            padding: 12px 24px;
+            margin: 10px;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .link-demo .link1 {
+            background: #3498db;
+            color: white;
+        }
+
+        .link-demo .link1:visited {
+            background: #9b59b6;
+        }
+
+        .link-demo .link1:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .link-demo .link1:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .link-demo .link1:focus {
+            outline: none;
+            border-color: #f39c12;
+            box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.3);
+        }
+
+        /* BUTTON STATES DEMO */
+        .btn-demo button {
+            padding: 15px 30px;
+            margin: 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-demo .btn-primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-demo .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-demo .btn-primary:active {
+            transform: scale(0.95);
+        }
+
+        .btn-demo .btn-primary:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.5);
+        }
+
+        .btn-demo .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* FORM STATES DEMO */
+        .form-demo {
+            display: grid;
+            gap: 20px;
+            max-width: 500px;
+        }
+
+        .form-demo input, .form-demo textarea, .form-demo select {
+            padding: 12px 16px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-demo input:focus, .form-demo textarea:focus, .form-demo select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-demo input:invalid {
+            border-color: #e74c3c;
+        }
+
+        .form-demo input:valid {
+            border-color: #27ae60;
+        }
+
+        .form-demo input:disabled {
+            background: #f5f5f5;
+            cursor: not-allowed;
+        }
+
+        .form-demo input::placeholder {
+            color: #999;
+            font-style: italic;
+        }
+
+        /* STRUCTURAL PSEUDO-CLASSES DEMO */
+        .list-demo ul {
+            list-style: none;
+            max-width: 400px;
+        }
+
+        .list-demo li {
+            padding: 15px;
+            margin: 5px 0;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .list-demo li:first-child {
+            background: #e8f5e8;
+            border-left: 4px solid #27ae60;
+        }
+
+        .list-demo li:last-child {
+            background: #ffeaa7;
+            border-left: 4px solid #fdcb6e;
+        }
+
+        .list-demo li:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .list-demo li:nth-child(odd) {
+            background: #e9ecef;
+        }
+
+        .list-demo li:hover {
+            transform: translateX(10px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        /* ADVANCED STATES DEMO */
+        .card-demo .card {
+            width: 300px;
+            padding: 20px;
+            border: 2px solid #eee;
+            border-radius: 12px;
+            margin: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card-demo .card:hover {
+            border-color: #667eea;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.15);
+            transform: translateY(-5px);
+        }
+
+        .card-demo .card:target {
+            background: #fff3cd;
+            border-color: #ffc107;
+        }
+
+        .card-demo .card:empty {
+            border-color: #dc3545;
+            background: #f8d7da;
+        }
+
+        .card-demo .card:empty::before {
+            content: "This card is empty";
+            color: #721c24;
+            font-style: italic;
+        }
+
+        /* CHECKBOX AND RADIO DEMO */
+        .checkbox-demo {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .checkbox-demo .custom-checkbox {
+            position: relative;
+        }
+
+        .checkbox-demo input[type="checkbox"] {
+            opacity: 0;
+            position: absolute;
+        }
+
+        .checkbox-demo label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .checkbox-demo label::before {
+            content: '';
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-demo input:checked + label::before {
+            background: #667eea;
+            border-color: #667eea;
+        }
+
+        .checkbox-demo input:checked + label::after {
+            content: '✓';
+            position: absolute;
+            left: 3px;
+            top: -1px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .checkbox-demo input:focus + label::before {
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
+        }
+
+        .checkbox-demo input:indeterminate + label::before {
+            background: #ffc107;
+            border-color: #ffc107;
+        }
+
+        .checkbox-demo input:indeterminate + label::after {
+            content: '−';
+            position: absolute;
+            left: 5px;
+            top: -3px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        /* ANIMATION DEMO */
+        .animation-demo .pulse-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 16px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .animation-demo .pulse-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.3s ease, height 0.3s ease;
+        }
+
+        .animation-demo .pulse-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .tips {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        .tips h3 {
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .tips ul {
+            padding-left: 20px;
+        }
+
+        .tips li {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Interactive States & Pseudo-classes</h1>
+            <p>Complete guide to hover, active, focus, and all interactive CSS states</p>
+        </div>
+
+        <div class="content">
+            <!-- BASIC LINK STATES -->
+            <div class="section">
+                <h2>1. Basic Link States (LVHA Order)</h2>
+                <p><strong>Remember: Love/Hate rule - Link, Visited, Hover, Active</strong></p>
+                
+                <div class="code-block">/* Basic link states - MUST be in this order */
+a:link {
+    color: blue;           /* Unvisited links */
+}
+
+a:visited {
+    color: purple;         /* Visited links */
+}
+
+a:hover {
+    color: red;           /* Mouse over */
+    text-decoration: underline;
+}
+
+a:active {
+    color: orange;        /* Being clicked */
+}</div>
+
+                <h3>Live Demo:</h3>
+                <div class="demo-area link-demo">
+                    <a href="#demo1" class="link1">Try Me - Hover & Click!</a>
+                    <a href="https://example.com" class="link1">External Link</a>
+                </div>
+            </div>
+
+            <!-- FOCUS STATES -->
+            <div class="section">
+                <h2>2. Focus States (Accessibility Critical)</h2>
+                
+                <div class="code-block">/* Focus states for accessibility */
+input:focus {
+    outline: 3px solid #4A90E2;
+    outline-offset: 2px;
+}
+
+button:focus {
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.5);
+    outline: none;
+}
+
+/* Focus within - when any child has focus */
+.form-group:focus-within {
+    background: #f0f8ff;
+}</div>
+
+                <h3>Live Demo:</h3>
+                <div class="demo-area form-demo">
+                    <input type="text" placeholder="Click or Tab to focus">
+                    <input type="email" placeholder="Email field">
+                    <button class="btn-primary">Focus me with Tab</button>
+                </div>
+            </div>
+
+            <!-- FORM STATES -->
+            <div class="section">
+                <h2>3. Form Input States</h2>
+                
+                <div class="code-block">/* Form input states */
+input:valid {
+    border-color: green;
+}
+
+input:invalid {
+    border-color: red;
+}
+
+input:required {
+    border-left: 3px solid orange;
+}
+
+input:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+input:checked {  /* For checkboxes/radio */
+    background: blue;
+}
+
+input:indeterminate {  /* Partial checkbox state */
+    background: yellow;
+}
+
+input::placeholder {
+    color: #999;
+    font-style: italic;
+}</div>
+
+                <h3>Live Demo:</h3>
+                <div class="demo-area form-demo">
+                    <input type="email" placeholder="Enter valid email" required>
+                    <input type="text" value="Disabled field" disabled>
+                    <select>
+                        <option>Choose option</option>
+                        <option>Option 1</option>
+                    </select>
+                </div>
+
+                <div class="demo-area checkbox-demo">
+                    <div class="custom-checkbox">
+                        <input type="checkbox" id="check1">
+                        <label for="check1">Check me</label>
+                    </div>
+                    <div class="custom-checkbox">
+                        <input type="checkbox" id="check2" checked>
+                        <label for="check2">Already checked</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BUTTON STATES -->
+            <div class="section">
+                <h2>4. Button States</h2>
+                
+                <div class="code-block">/* Button states */
+.button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.button:hover {
+    background: #0056b3;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+}
+
+.button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}</div>
+
+                <h3>Live Demo:</h3>
+                <div class="demo-area btn-demo">
+                    <button class="btn-primary">Hover Me</button>
+                    <button class="btn-primary" disabled>Disabled Button</button>
+                </div>
+            </div>
+
+            <!-- STRUCTURAL PSEUDO-CLASSES -->
+            <div class="section">
+                <h2>5. Structural Pseudo-classes</h2>
+                
+                <div class="code-block">/* First and last children */
+li:first-child { background: lightgreen; }
+li:last-child { background: lightcoral; }
+
+/* Nth-child patterns */
+li:nth-child(even) { background: #f0f0f0; }
+li:nth-child(odd) { background: white; }
+li:nth-child(3n) { color: red; }          /* Every 3rd */
+li:nth-child(3n+1) { color: blue; }       /* 1st, 4th, 7th... */
+
+/* Nth-of-type (by element type) */
+p:nth-of-type(2) { font-weight: bold; }
+
+/* Only child */
+p:only-child { text-align: center; }
+
+/* Empty elements */
+div:empty { display: none; }</div>
+
+                <h3>Live Demo:</h3>
+                <div class="demo-area list-demo">
+                    <ul>
+                        <li>First item (green)</li>
+                        <li>Second item (even)</li>
+                        <li>Third item (odd)</li>
+                        <li>Fourth item (even)</li>
+                        <li>Last item (yellow)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ADVANCED STATES -->
+            <div class="section">
+                <h2>6. Advanced Interactive States</h2>
+                
+                <div class="code-block">/* Target - when element is linked to */
+:target {
+    background: yellow;
+    animation: highlight 2s ease;
+}
+
+/* Not selector */
+p:not(.special) { color: gray; }
+
+/* Has selector (future CSS) */
+.card:has(.error) { border: 2px solid red; }
+
+/* Language */
+:lang(en) { font-family: Arial; }
+
+/* Root element */
+:root { --main-color: blue; }
+
+/* Fullscreen */
+:fullscreen { background: black; }
+
+/* Custom highlight */
+::selection {
+    background: #ff6b6b;
+    color: white;
+}</div>
+
+                <h3>Live Demo:</h3>
+                <div class="demo-area card-demo">
+                    <div class="card" id="demo1">
+                        <h4>Card 1</h4>
+                        <p>Click the link above to target this card</p>
+                    </div>
+                    <div class="card"></div>
+                </div>
+            </div>
+
+            <!-- ANIMATION WITH STATES -->
+            <div class="section">
+                <h2>7. Combining States with Animations</h2>
+                
+                <div class="code-block">/* Ripple effect on click */
+.button {
+    position: relative;
+    overflow: hidden;
+}
+
+.button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease;
+}
+
+.button:active::before {
+    width: 300px;
+    height: 300px;
+}
+
+/* Smooth state transitions */
+.element {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}</div>
+
+                <h3>Live Demo:</h3>
+                <div class="demo-area animation-demo">
+                    <button class="pulse-btn">Click for Ripple Effect</button>
+                </div>
+            </div>
+
+            <!-- BEST PRACTICES -->
+            <div class="tips">
+                <h3>🎯 Best Practices & Tips</h3>
+                <ul>
+                    <li><strong>LVHA Order:</strong> Always define link states in order: Link, Visited, Hover, Active</li>
+                    <li><strong>Focus First:</strong> Always include focus styles for accessibility</li>
+                    <li><strong>Smooth Transitions:</strong> Use transitions to make state changes feel natural</li>
+                    <li><strong>Visual Feedback:</strong> Every interactive element should provide clear feedback</li>
+                    <li><strong>Mobile Considerations:</strong> Hover states don't work on touch devices</li>
+                    <li><strong>Performance:</strong> Use transform and opacity for animations (GPU accelerated)</li>
+                    <li><strong>Accessibility:</strong> Ensure sufficient color contrast in all states</li>
+                    <li><strong>Loading States:</strong> Show loading/disabled states for better UX</li>
+                    <li><strong>Touch Targets:</strong> Minimum 44px touch target for mobile</li>
+                    <li><strong>Test Everything:</strong> Test with keyboard navigation and screen readers</li>
+                </ul>
+            </div>
+
+            <!-- COMMON PATTERNS -->
+            <div class="section">
+                <h2>8. Common Interactive Patterns</h2>
+                
+                <div class="code-block">/* Card hover effect */
+.card {
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+/* Button loading state */
+.btn-loading {
+    position: relative;
+    color: transparent;
+}
+
+.btn-loading::after {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 50%;
+    left: 50%;
+    margin: -8px 0 0 -8px;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    border-right-color: transparent;
+    animation: spin 1s linear infinite;
+}
+
+/* Form validation states */
+.field-error input {
+    border-color: #dc3545;
+    background-image: url('error-icon.svg');
+    background-position: right 8px center;
+    background-repeat: no-repeat;
+}
+
+.field-success input {
+    border-color: #28a745;
+    background-image: url('success-icon.svg');
+    background-position: right 8px center;
+    background-repeat: no-repeat;
+}
+
+/* Dropdown menu states */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+}
+
+.dropdown:hover .dropdown-menu,
+.dropdown:focus-within .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add some JavaScript for enhanced interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add indeterminate state to checkbox demo
+            const checkbox = document.getElementById('check2');
+            if (checkbox) {
+                setTimeout(() => {
+                    checkbox.indeterminate = true;
+                }, 2000);
+            }
+
+            // Add selection highlight demo
+            document.addEventListener('selectstart', function(e) {
+                console.log('Text selection started');
+            });
+        });
+    </script>
+</body>
+</html>
